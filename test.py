@@ -3,6 +3,7 @@ import io, sys
 from user import User
 from gift import Gift
 from kiosk import Kiosk
+import user
 
 class TestUser(unittest.TestCase):
   def testUser(self):
@@ -76,6 +77,14 @@ class TestKiosk(unittest.TestCase):
     self.assertFalse(result)
     self.assertEqual(user.points, 100)
     self.assertFalse(user.saved)
+
+  # R4 - the new touchscreens capitalise. "Yes" must still confirm.
+  def testAnswerCapitalYes(self):
+    self.answer('Yes')
+    user = FakeUser(100)
+    result = Kiosk().redeem(user, Gift('ruler', 25))
+    self.assertTrue(result)
+    self.assertEqual(user.points, 75)
 
   # R2 - AT LEAST means exactly enough is enough.
   def testExactlyEnoughPoints(self):
